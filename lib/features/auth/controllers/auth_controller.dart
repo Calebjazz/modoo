@@ -45,6 +45,22 @@ class AuthController extends ChangeNotifier {
     ));
   }
 
+  Future<void> updateDisplayName(String fullName) async {
+    final user = _user;
+    if (user == null) throw StateError('No signed-in user to update.');
+    final normalizedName = fullName.trim();
+    if (normalizedName.isEmpty) {
+      throw ArgumentError.value(fullName, 'fullName', 'Must not be empty.');
+    }
+
+    _setUser(
+      await _repository.updateDisplayName(
+        userId: user.id,
+        fullName: normalizedName,
+      ),
+    );
+  }
+
   Future<void> signOut() async {
     await _repository.signOut();
     _setUser(null);

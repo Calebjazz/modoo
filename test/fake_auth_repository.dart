@@ -43,5 +43,23 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
+  Future<AppUser> updateDisplayName({
+    required int userId,
+    required String fullName,
+  }) async {
+    final entry = _users.entries.firstWhere(
+      (entry) => entry.value.$1.id == userId,
+    );
+    final updated = AppUser(
+      id: userId,
+      fullName: fullName.trim(),
+      email: entry.value.$1.email,
+      createdAt: entry.value.$1.createdAt,
+    );
+    _users[entry.key] = (updated, entry.value.$2);
+    return _current = updated;
+  }
+
+  @override
   Future<void> signOut() async => _current = null;
 }

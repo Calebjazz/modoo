@@ -79,7 +79,12 @@ void main() {
 
     await tester.tap(find.text('PROFILE'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('SIGN OUT'));
+    await tester.scrollUntilVisible(
+      find.text('SIGN OUT OF ATELIER'),
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.tap(find.text('SIGN OUT OF ATELIER'));
     await tester.pumpAndSettle();
     expect(find.text('WELCOME BACK'), findsOneWidget);
   });

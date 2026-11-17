@@ -31,5 +31,10 @@ abstract interface class AuthRepository {
     required String password,
   });
 
+  Future<AppUser> updateDisplayName({
+    required int userId,
+    required String fullName,
+  });
+
   Future<void> signOut();
 }

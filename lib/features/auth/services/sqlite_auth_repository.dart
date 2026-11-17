@@ -4,15 +4,18 @@ import '../../../core/database/app_database.dart';
 import '../models/app_user.dart';
 import 'auth_repository.dart';
 import 'password_hasher.dart';
+import 'sqlite_profile_repository.dart';
 
 class SqliteAuthRepository implements AuthRepository {
   SqliteAuthRepository(this._database, {PasswordHasher? hasher})
-      : _hasher = hasher ?? const PasswordHasher();
+    : _hasher = hasher ?? const PasswordHasher(),
+      _profiles = SqliteProfileRepository(_database);
 
   static const _sessionKey = 'current_user_id';
 
   final AppDatabase _database;
   final PasswordHasher _hasher;
+  final SqliteProfileRepository _profiles;
 
   Database get _db => _database.db;
 
@@ -96,6 +99,12 @@ class SqliteAuthRepository implements AuthRepository {
       createdAt: createdAt,
     );
   }
+
+  @override
+  Future<AppUser> updateDisplayName({
+    required int userId,
+    required String fullName,
+  }) => _profiles.updateDisplayName(userId: userId, fullName: fullName);
 
   @override
   Future<void> signOut() async {
