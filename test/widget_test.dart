@@ -19,8 +19,9 @@ void _phoneSize(WidgetTester tester) {
 }
 
 void main() {
-  testWidgets('Signed-out user sees login; register lands on home',
-      (tester) async {
+  testWidgets('Signed-out user sees login; register lands on home', (
+    tester,
+  ) async {
     _phoneSize(tester);
     await tester.pumpWidget(ModooApp(authRepository: FakeAuthRepository()));
     await tester.pumpAndSettle();
@@ -51,7 +52,10 @@ void main() {
     await tester.pumpWidget(ModooApp(authRepository: repo));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextFormField).at(0), 'elena@example.com');
+    await tester.enterText(
+      find.byType(TextFormField).at(0),
+      'elena@example.com',
+    );
     await tester.enterText(find.byType(TextFormField).at(1), 'wrongpass');
     await tester.tap(find.text('SIGN IN'));
     await tester.pumpAndSettle();
@@ -63,8 +67,9 @@ void main() {
     expect(find.text('WELCOME BACK,\nELENA'), findsOneWidget);
   });
 
-  testWidgets('Home bottom nav switches tabs and sign out returns to login',
-      (tester) async {
+  testWidgets('Home bottom nav switches tabs and sign out returns to login', (
+    tester,
+  ) async {
     _phoneSize(tester);
     await tester.pumpWidget(
       ModooApp(authRepository: FakeAuthRepository(signedIn: _elena)),
@@ -74,8 +79,10 @@ void main() {
 
     await tester.tap(find.text('WARDROBE').last);
     await tester.pumpAndSettle();
-    expect(find.textContaining('Arrives with the clothing catalogue'),
-        findsOneWidget);
+    expect(
+      find.textContaining('Arrives with the clothing catalogue'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('PROFILE'));
     await tester.pumpAndSettle();
@@ -103,5 +110,25 @@ void main() {
     await tester.tap(find.byIcon(Icons.favorite_border_rounded).first);
     await tester.pump();
     expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
+  });
+
+  testWidgets('Looks tab shows the curated lookbook', (tester) async {
+    _phoneSize(tester);
+    await tester.pumpWidget(
+      ModooApp(authRepository: FakeAuthRepository(signedIn: _elena)),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('LOOKS').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('CURATED LOOKS'), findsOneWidget);
+    expect(find.text('Noir Tailoring'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('CREATE NEW ENSEMBLE'),
+      400,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('CREATE NEW ENSEMBLE'), findsOneWidget);
   });
 }
