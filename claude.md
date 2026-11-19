@@ -541,5 +541,6 @@ Only after successfully demonstrating these requirements should full MODOO devel
 ## 12. Push and Commits to Github
 
 - Always use convetional commits when commiting to github
+- working with me im the author always and not claude
 
 **Remember: MODOO is a 3D Virtual Fashion Studio. The interactive human avatar and clothing customization experience are the heart of the application.**
