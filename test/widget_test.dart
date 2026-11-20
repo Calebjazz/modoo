@@ -79,10 +79,7 @@ void main() {
 
     await tester.tap(find.text('WARDROBE').last);
     await tester.pumpAndSettle();
-    expect(
-      find.textContaining('Arrives with the clothing catalogue'),
-      findsOneWidget,
-    );
+    expect(find.text('DIGITAL\nWARDROBE'), findsOneWidget);
 
     await tester.tap(find.text('PROFILE'));
     await tester.pumpAndSettle();

@@ -17,7 +17,6 @@ class AvatarViewport extends StatelessWidget {
     required this.onFrameChanged,
     required this.onYawChanged,
     required this.onRecenter,
-    required this.onMeshInfo,
   });
 
   final String avatarCode;
@@ -29,7 +28,6 @@ class AvatarViewport extends StatelessWidget {
   final ValueChanged<AvatarFrame> onFrameChanged;
   final ValueChanged<int> onYawChanged;
   final VoidCallback onRecenter;
-  final VoidCallback onMeshInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -129,37 +127,31 @@ class AvatarViewport extends StatelessWidget {
               Positioned(
                 right: 16,
                 bottom: 10,
-                child: Row(
-                  children: [
-                    _RoundControl(
-                      tooltip: 'Rotate left',
-                      icon: Icons.rotate_left_rounded,
-                      onTap: () => onYawChanged(yawDegrees - 15),
-                    ),
-                    const SizedBox(width: 5),
-                    _RoundControl(
-                      tooltip: 'Recenter avatar',
-                      icon: Icons.center_focus_strong_outlined,
-                      onTap: onRecenter,
-                    ),
-                    const SizedBox(width: 5),
-                    _RoundControl(
-                      tooltip: 'Rotate right',
-                      icon: Icons.rotate_right_rounded,
-                      onTap: () => onYawChanged(yawDegrees + 15),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                right: 8,
-                bottom: 60,
-                child: IconButton(
-                  tooltip: 'Mesh controls',
-                  onPressed: onMeshInfo,
-                  icon: const Icon(Icons.polyline_rounded, size: 18),
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.white.withValues(alpha: 0.8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    color: AppColors.white.withValues(alpha: 0.9),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _RoundControl(
+                        tooltip: 'Rotate left',
+                        icon: Icons.rotate_left_rounded,
+                        onTap: () => onYawChanged(yawDegrees - 15),
+                      ),
+                      _RoundControl(
+                        tooltip: 'Recenter avatar',
+                        icon: Icons.center_focus_strong_outlined,
+                        onTap: onRecenter,
+                      ),
+                      _RoundControl(
+                        tooltip: 'Rotate right',
+                        icon: Icons.rotate_right_rounded,
+                        onTap: () => onYawChanged(yawDegrees + 15),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -276,12 +268,12 @@ class _RoundControl extends StatelessWidget {
     return Tooltip(
       message: tooltip,
       child: Material(
-        color: AppColors.white.withValues(alpha: 0.9),
+        color: Colors.transparent,
         shape: const CircleBorder(),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: onTap,
-          child: SizedBox(width: 36, height: 36, child: Icon(icon, size: 16)),
+          child: SizedBox(width: 32, height: 36, child: Icon(icon, size: 16)),
         ),
       ),
     );

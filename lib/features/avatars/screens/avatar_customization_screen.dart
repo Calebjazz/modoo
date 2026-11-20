@@ -94,9 +94,6 @@ class _AvatarCustomizationScreenState extends State<AvatarCustomizationScreen> {
                   onYawChanged: (value) =>
                       setState(() => _yawDegrees = value % 360),
                   onRecenter: () => setState(() => _yawDegrees = 0),
-                  onMeshInfo: () => _showIntegrationMessage(
-                    'Mesh controls require the Unity avatar integration.',
-                  ),
                 ),
               ),
               Padding(
