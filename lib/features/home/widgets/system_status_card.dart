@@ -36,15 +36,15 @@ class SystemStatusCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _StatusTile(
-                  label: '3D engine',
-                  value: 'Unity · Not connected',
+                  label: 'Cloth solver',
+                  value: 'Exact-PBD 2.4',
                 ),
               ),
               SizedBox(width: 8),
               Expanded(
                 child: _StatusTile(
-                  label: 'Local data',
-                  value: 'SQLite · Pending',
+                  label: 'Raytracing HUD',
+                  value: 'Pathtraced GI',
                 ),
               ),
             ],

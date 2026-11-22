@@ -56,16 +56,16 @@ class StudioPreviewCard extends StatelessWidget {
                     top: 12,
                     left: 12,
                     child: TagChip(
-                      '3D view',
+                      'CAM: 360  ISO',
                       variant: TagChipVariant.white,
                       leading: Icon(Icons.threesixty_rounded),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 12,
                     right: 12,
                     child: TagChip(
-                      'Engine: Unity',
+                      'PHYSICS: RIGID 60FPS',
                       variant: TagChipVariant.white,
                     ),
                   ),
@@ -76,7 +76,7 @@ class StudioPreviewCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TagChip(
-                        'Look: $lookName',
+                        'LOOK: ${lookName.toUpperCase()}',
                         variant: TagChipVariant.dark,
                         leading: const StatusDot(),
                       ),

@@ -34,7 +34,7 @@ class HomeHeader extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         const Text(
-          'Wear it your way. Build, layer and preview full looks on your 3D avatar.',
+          'Wear it your way. Realistic 3D garment cloth simulation ready.',
           style: AppTextStyles.lead,
         ),
         const SizedBox(height: 16),
@@ -63,17 +63,14 @@ class _AvatarLine extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'MODEL: ${avatar.code} ${avatar.type} // ${avatar.bodyShape}'
+              'MODEL: ${avatar.code} // ${avatar.type} // '
+                      '${avatar.bodyShape} // ${avatar.heightCm}CM'
                   .toUpperCase(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.label.copyWith(color: AppColors.grey),
             ),
           ),
-          const SizedBox(width: 8),
-          const StatusDot(color: AppColors.grey, size: 4),
-          const SizedBox(width: 8),
-          Text('${avatar.heightCm}CM', style: AppTextStyles.label),
         ],
       ),
     );

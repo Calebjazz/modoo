@@ -16,7 +16,7 @@ class LookCard extends StatelessWidget {
     required this.onReapply,
   });
 
-  static const double width = 264;
+  static const double width = 210;
 
   final LookPreview look;
   final bool isFavorite;

@@ -25,15 +25,15 @@ class HomeScreen extends StatelessWidget {
 
     void openStudio() => nav.goTo(AppTab.studio);
     void openCustomization() => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => const AvatarCustomizationScreen(),
-          ),
-        );
+      MaterialPageRoute<void>(
+        builder: (_) => const AvatarCustomizationScreen(),
+      ),
+    );
 
     Widget padded(Widget child) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: _gutter),
-          child: child,
-        );
+      padding: const EdgeInsets.symmetric(horizontal: _gutter),
+      child: child,
+    );
 
     return SafeArea(
       bottom: false,
@@ -42,9 +42,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            padded(
-              HomeHeader(userName: firstName, avatar: home.activeAvatar),
-            ),
+            padded(HomeHeader(userName: firstName, avatar: home.activeAvatar)),
             const SizedBox(height: 20),
             padded(
               StudioPreviewCard(
@@ -64,19 +62,19 @@ class HomeScreen extends StatelessWidget {
                   QuickAccessItem(
                     icon: Icons.checkroom_outlined,
                     title: 'Wardrobe',
-                    caption: '${home.stats.wardrobeItems} items',
+                    caption: '${home.stats.wardrobeItems} ITEMS',
                     onTap: () => nav.goTo(AppTab.wardrobe),
                   ),
                   QuickAccessItem(
                     icon: Icons.style_outlined,
                     title: 'Saved Looks',
-                    caption: '${home.stats.savedLooks} builds',
+                    caption: '${home.stats.savedLooks} BUILDS',
                     onTap: () => nav.goTo(AppTab.looks),
                   ),
                   QuickAccessItem(
                     icon: Icons.accessibility_new_rounded,
                     title: 'Pose Lab',
-                    caption: '${home.stats.poses} poses',
+                    caption: '${home.stats.poses} ACTIVE',
                     onTap: openStudio,
                   ),
                 ],
