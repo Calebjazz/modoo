@@ -42,9 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _submitting = true);
     try {
       await context.read<AuthController>().signIn(
-            email: _email.text,
-            password: _password.text,
-          );
+        email: _email.text,
+        password: _password.text,
+      );
       TextInput.finishAutofillContext();
     } on AuthException catch (e) {
       if (mounted) setState(() => _error = e.message);
@@ -54,9 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _openRegister() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const RegisterScreen()),
-    );
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (_) => const RegisterScreen()));
   }
 
   @override

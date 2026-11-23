@@ -14,7 +14,10 @@ class FakeAuthRepository implements AuthRepository {
   Future<AppUser?> currentUser() async => _current;
 
   @override
-  Future<AppUser> signIn({required String email, required String password}) async {
+  Future<AppUser> signIn({
+    required String email,
+    required String password,
+  }) async {
     final entry = _users[email.trim().toLowerCase()];
     if (entry == null || entry.$2 != password) {
       throw const AuthException(AuthErrorCode.invalidCredentials);

@@ -35,8 +35,9 @@ class PasswordHasher {
     final salt = base64.decode(parts[2]);
     final expected = base64.decode(parts[3]);
     final pwd = utf8.encode(password);
-    final actual =
-        await Isolate.run(() => _pbkdf2(pwd, salt, rounds, expected.length));
+    final actual = await Isolate.run(
+      () => _pbkdf2(pwd, salt, rounds, expected.length),
+    );
     return _constantTimeEquals(actual, expected);
   }
 

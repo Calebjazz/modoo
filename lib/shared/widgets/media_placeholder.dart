@@ -36,8 +36,9 @@ class MediaPlaceholder extends StatelessWidget {
   }
 
   Widget _buildPlaceholder() {
-    final foreground =
-        dark ? AppColors.placeholderDarkIcon : AppColors.placeholderLightIcon;
+    final foreground = dark
+        ? AppColors.placeholderDarkIcon
+        : AppColors.placeholderLightIcon;
 
     return ColoredBox(
       color: dark ? AppColors.placeholderDark : AppColors.placeholderLight,

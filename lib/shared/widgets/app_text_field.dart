@@ -67,8 +67,10 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         filled: true,
         fillColor: AppColors.white,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 19),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 19,
+        ),
         prefixIcon: widget.icon == null
             ? null
             : Padding(

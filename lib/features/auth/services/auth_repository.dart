@@ -8,10 +8,10 @@ class AuthException implements Exception {
   final AuthErrorCode code;
 
   String get message => switch (code) {
-        AuthErrorCode.emailInUse =>
-          'An account with this email already exists on this device.',
-        AuthErrorCode.invalidCredentials => 'Incorrect email or password.',
-      };
+    AuthErrorCode.emailInUse =>
+      'An account with this email already exists on this device.',
+    AuthErrorCode.invalidCredentials => 'Incorrect email or password.',
+  };
 
   @override
   String toString() => 'AuthException($code)';

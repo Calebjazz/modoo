@@ -14,9 +14,9 @@ class AppUser {
   String get firstName => fullName.trim().split(RegExp(r'\s+')).first;
 
   factory AppUser.fromRow(Map<String, Object?> row) => AppUser(
-        id: row['id']! as int,
-        fullName: row['full_name']! as String,
-        email: row['email']! as String,
-        createdAt: DateTime.parse(row['created_at']! as String),
-      );
+    id: row['id']! as int,
+    fullName: row['full_name']! as String,
+    email: row['email']! as String,
+    createdAt: DateTime.parse(row['created_at']! as String),
+  );
 }

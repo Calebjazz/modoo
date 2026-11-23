@@ -46,8 +46,7 @@ class PillButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
           child: loading
               ? Row(
-                  mainAxisSize:
-                      expand ? MainAxisSize.max : MainAxisSize.min,
+                  mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox.square(
@@ -60,27 +59,27 @@ class PillButton extends StatelessWidget {
                   ],
                 )
               : Row(
-            mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) ...[
-                Icon(icon, size: 16, color: foreground),
-                const SizedBox(width: 8),
-              ],
-              Flexible(
-                child: Text(
-                  label.toUpperCase(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.button.copyWith(color: foreground),
+                  mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (icon != null) ...[
+                      Icon(icon, size: 16, color: foreground),
+                      const SizedBox(width: 8),
+                    ],
+                    Flexible(
+                      child: Text(
+                        label.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.button.copyWith(color: foreground),
+                      ),
+                    ),
+                    if (trailingIcon != null) ...[
+                      const SizedBox(width: 8),
+                      Icon(trailingIcon, size: 16, color: foreground),
+                    ],
+                  ],
                 ),
-              ),
-              if (trailingIcon != null) ...[
-                const SizedBox(width: 8),
-                Icon(trailingIcon, size: 16, color: foreground),
-              ],
-            ],
-          ),
         ),
       ),
     );

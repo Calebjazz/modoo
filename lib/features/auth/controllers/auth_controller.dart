@@ -38,11 +38,13 @@ class AuthController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    _setUser(await _repository.register(
-      fullName: fullName,
-      email: email,
-      password: password,
-    ));
+    _setUser(
+      await _repository.register(
+        fullName: fullName,
+        email: email,
+        password: password,
+      ),
+    );
   }
 
   Future<void> updateDisplayName(String fullName) async {

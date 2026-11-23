@@ -34,7 +34,11 @@ class PhasePendingView extends StatelessWidget {
             Text(message, style: AppTextStyles.lead),
             const Spacer(),
             Center(
-              child: Icon(icon, size: 64, color: AppColors.placeholderLightIcon),
+              child: Icon(
+                icon,
+                size: 64,
+                color: AppColors.placeholderLightIcon,
+              ),
             ),
             const Spacer(),
           ],

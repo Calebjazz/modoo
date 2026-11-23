@@ -35,10 +35,7 @@ class CapsulesSection extends StatelessWidget {
         const SizedBox(height: 16),
         for (var i = 0; i < capsules.length; i++) ...[
           if (i > 0) const SizedBox(height: 14),
-          CapsuleCard(
-            capsule: capsules[i],
-            onOpen: () => onOpen(capsules[i]),
-          ),
+          CapsuleCard(capsule: capsules[i], onOpen: () => onOpen(capsules[i])),
         ],
       ],
     );

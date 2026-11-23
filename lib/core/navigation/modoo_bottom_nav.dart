@@ -18,13 +18,13 @@ class ModooBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget item(AppTab tab, IconData icon, String label) => Expanded(
-          child: _NavItem(
-            icon: icon,
-            label: label,
-            selected: current == tab,
-            onTap: () => onSelected(tab),
-          ),
-        );
+      child: _NavItem(
+        icon: icon,
+        label: label,
+        selected: current == tab,
+        onTap: () => onSelected(tab),
+      ),
+    );
 
     return DecoratedBox(
       decoration: const BoxDecoration(

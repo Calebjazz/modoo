@@ -48,8 +48,10 @@ class SqliteAuthRepository implements AuthRepository {
     if (rows.isEmpty) {
       throw const AuthException(AuthErrorCode.invalidCredentials);
     }
-    final ok =
-        await _hasher.verify(password, rows.first['password_hash']! as String);
+    final ok = await _hasher.verify(
+      password,
+      rows.first['password_hash']! as String,
+    );
     if (!ok) throw const AuthException(AuthErrorCode.invalidCredentials);
 
     final user = AppUser.fromRow(rows.first);
@@ -115,9 +117,8 @@ class SqliteAuthRepository implements AuthRepository {
     );
   }
 
-  Future<void> _saveSession(int userId) => _db.insert(
-        'app_settings',
-        {'key': _sessionKey, 'value': '$userId'},
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
+  Future<void> _saveSession(int userId) => _db.insert('app_settings', {
+    'key': _sessionKey,
+    'value': '$userId',
+  }, conflictAlgorithm: ConflictAlgorithm.replace);
 }

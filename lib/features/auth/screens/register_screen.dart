@@ -47,10 +47,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() => _submitting = true);
     try {
       await context.read<AuthController>().register(
-            fullName: _name.text,
-            email: _email.text,
-            password: _password.text,
-          );
+        fullName: _name.text,
+        email: _email.text,
+        password: _password.text,
+      );
       TextInput.finishAutofillContext();
       // Signed in: AuthGate now shows the app underneath — drop this route.
       if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
@@ -99,7 +99,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 14),
               AppTextField(
                 controller: _password,
-                hint: 'Password (min. ${Validators.minPasswordLength} characters)',
+                hint:
+                    'Password (min. ${Validators.minPasswordLength} characters)',
                 icon: Icons.lock_outline_rounded,
                 isPassword: true,
                 textInputAction: TextInputAction.next,
