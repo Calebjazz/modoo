@@ -5,6 +5,7 @@ import '../../../core/navigation/navigation_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../auth/controllers/auth_controller.dart';
 import '../../home/controllers/home_controller.dart';
+import '../../outfits/controllers/outfits_controller.dart';
 import '../widgets/profile_account_dialogs.dart';
 import '../widgets/profile_actions.dart';
 import '../widgets/profile_avatar_card.dart';
@@ -50,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             ProfileStats(
-              savedLooks: home.stats.savedLooks,
+              savedLooks: context.watch<OutfitsController>().savedCount,
               garments: home.stats.wardrobeItems,
               avatars: 1,
             ),

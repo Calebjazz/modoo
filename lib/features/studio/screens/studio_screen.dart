@@ -1,75 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../shared/widgets/pill_button.dart';
-import '../models/studio_garment.dart';
+import '../../outfits/controllers/outfits_controller.dart';
+import '../../outfits/widgets/outfit_dialogs.dart';
+import '../controllers/studio_controller.dart';
 import '../widgets/studio_garment_picker.dart';
 import '../widgets/studio_viewport.dart';
 
-class StudioScreen extends StatefulWidget {
+class StudioScreen extends StatelessWidget {
   const StudioScreen({super.key});
 
-  @override
-  State<StudioScreen> createState() => _StudioScreenState();
-}
-
-class _StudioScreenState extends State<StudioScreen> {
-  static final _initialGarments = <StudioGarmentSlot, StudioGarment>{
-    StudioGarmentSlot.outerwear: StudioPreviewCatalog.items[8],
-    StudioGarmentSlot.top: StudioPreviewCatalog.items[1],
-    StudioGarmentSlot.bottom: StudioPreviewCatalog.items[3],
-  };
-
-  String _avatar = 'AURA';
-  String _view = 'FRONT';
-  int _zoomPercent = 100;
-  StudioGarmentCategory _category = StudioGarmentCategory.tops;
-  Map<StudioGarmentSlot, StudioGarment> _mountedGarments = {
-    ..._initialGarments,
-  };
-
-  void _fitGarment(StudioGarment garment) {
-    setState(() {
-      _mountedGarments = {..._mountedGarments, garment.slot: garment};
-    });
-  }
-
-  void _removeGarment(StudioGarmentSlot slot) {
-    setState(() {
-      _mountedGarments = Map.of(_mountedGarments)..remove(slot);
-    });
-  }
-
-  void _showUnavailable(String feature) {
+  static void _message(BuildContext context, String text) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        SnackBar(
-          content: Text(
-            '$feature requires the Unity preview, which is offline.',
-          ),
-          behavior: SnackBarBehavior.floating,
-        ),
+        SnackBar(content: Text(text), behavior: SnackBarBehavior.floating),
       );
   }
 
-  void _showSaveUnavailable() {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Outfit saving is unavailable until outfit storage is implemented.',
-          ),
-          behavior: SnackBarBehavior.floating,
-        ),
+  static void _showUnavailable(BuildContext context, String feature) =>
+      _message(
+        context,
+        '$feature requires the Unity preview, which is offline.',
       );
+
+  static Future<void> _save(BuildContext context) async {
+    final studio = context.read<StudioController>();
+    final outfits = context.read<OutfitsController>();
+    if (studio.mountedGarments.isEmpty) {
+      _message(context, 'Mount at least one garment before saving.');
+      return;
+    }
+    final editing = studio.editing;
+    final request = await OutfitDialogs.save(
+      context,
+      initialName: editing?.name ?? '',
+      canUpdate: editing != null,
+    );
+    if (request == null || !context.mounted) return;
+    try {
+      final saved = editing != null && !request.asNew
+          ? await outfits.update(
+              editing.copyWith(
+                name: request.name,
+                avatarId: studio.avatarId,
+                garmentIds: studio.mountedGarmentIds,
+              ),
+            )
+          : await outfits.create(
+              name: request.name,
+              avatarId: studio.avatarId,
+              garmentIds: studio.mountedGarmentIds,
+            );
+      studio.markSaved(saved);
+      if (context.mounted) _message(context, 'Saved "${saved.name}" to Looks.');
+    } catch (error) {
+      if (context.mounted) _message(context, 'Could not save outfit: $error');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final avatarLabel = _avatar == 'AURA' ? 'FEM [AURA]' : 'MASC [KAI]';
+    final studio = context.watch<StudioController>();
+    final avatarLabel = studio.avatarId == 'AURA' ? 'FEM [AURA]' : 'MASC [KAI]';
+    final editing = studio.editing;
 
     return SafeArea(
       bottom: false,
@@ -85,8 +82,8 @@ class _StudioScreenState extends State<StudioScreen> {
                   child: _ChoiceSegment(
                     choices: const ['FEM [AURA]', 'MASC [KAI]'],
                     selected: avatarLabel,
-                    onSelected: (value) => setState(
-                      () => _avatar = value == 'FEM [AURA]' ? 'AURA' : 'KAI',
+                    onSelected: (value) => studio.setAvatar(
+                      value == 'FEM [AURA]' ? 'AURA' : 'KAI',
                     ),
                   ),
                 ),
@@ -95,8 +92,8 @@ class _StudioScreenState extends State<StudioScreen> {
                   flex: 10,
                   child: _ChoiceSegment(
                     choices: const ['FRONT', 'SIDE', 'BACK'],
-                    selected: _view,
-                    onSelected: (value) => setState(() => _view = value),
+                    selected: studio.view,
+                    onSelected: studio.setView,
                   ),
                 ),
               ],
@@ -104,9 +101,13 @@ class _StudioScreenState extends State<StudioScreen> {
             const SizedBox(height: 8),
             Row(
               children: [
-                const _InfoPill(
-                  icon: Icons.tune_rounded,
-                  label: 'PROP: S-02 STD',
+                _InfoPill(
+                  icon: editing == null
+                      ? Icons.tune_rounded
+                      : Icons.edit_outlined,
+                  label: editing == null
+                      ? 'PROP: S-02 STD'
+                      : 'EDITING: ${editing.name.toUpperCase()}',
                 ),
                 const Spacer(),
                 const _InfoPill(
@@ -120,18 +121,14 @@ class _StudioScreenState extends State<StudioScreen> {
               height: 292,
               child: StudioViewport(
                 avatarName: avatarLabel,
-                viewName: _view,
-                zoomPercent: _zoomPercent,
-                mountedGarments: _mountedGarments,
-                onZoomIn: () => setState(
-                  () => _zoomPercent = (_zoomPercent + 10).clamp(70, 130),
-                ),
-                onZoomOut: () => setState(
-                  () => _zoomPercent = (_zoomPercent - 10).clamp(70, 130),
-                ),
-                onRemoveGarment: _removeGarment,
-                onDropGarment: _fitGarment,
-                onFeatureTap: _showUnavailable,
+                viewName: studio.view,
+                zoomPercent: studio.zoomPercent,
+                mountedGarments: studio.mountedGarments,
+                onZoomIn: studio.zoomIn,
+                onZoomOut: studio.zoomOut,
+                onRemoveGarment: studio.remove,
+                onDropGarment: studio.fit,
+                onFeatureTap: (feature) => _showUnavailable(context, feature),
               ),
             ),
             const SizedBox(height: 8),
@@ -141,7 +138,7 @@ class _StudioScreenState extends State<StudioScreen> {
                 const SizedBox(width: 5),
                 Expanded(
                   child: Text(
-                    'LOCAL PREVIEW · SELECTIONS ARE NOT SAVED OR RENDERED IN 3D',
+                    'LOCAL PREVIEW · GARMENTS ARE NOT RENDERED IN 3D YET',
                     style: AppTextStyles.eyebrow.copyWith(fontSize: 8),
                   ),
                 ),
@@ -149,17 +146,17 @@ class _StudioScreenState extends State<StudioScreen> {
             ),
             const SizedBox(height: 16),
             StudioGarmentPicker(
-              category: _category,
-              mountedGarments: _mountedGarments,
-              onCategoryChanged: (value) => setState(() => _category = value),
-              onGarmentSelected: _fitGarment,
+              category: studio.category,
+              mountedGarments: studio.mountedGarments,
+              onCategoryChanged: studio.setCategory,
+              onGarmentSelected: studio.fit,
+              onGarmentRemoved: studio.remove,
             ),
             const SizedBox(height: 14),
             Row(
               children: [
                 TextButton.icon(
-                  onPressed: () =>
-                      setState(() => _mountedGarments = {..._initialGarments}),
+                  onPressed: studio.resetLook,
                   icon: const Icon(Icons.refresh_rounded, size: 16),
                   label: const Text('RESET LOOK'),
                   style: TextButton.styleFrom(
@@ -172,7 +169,7 @@ class _StudioScreenState extends State<StudioScreen> {
                 const Spacer(),
                 IconButton(
                   tooltip: 'Capture preview',
-                  onPressed: () => _showUnavailable('Preview capture'),
+                  onPressed: () => _showUnavailable(context, 'Preview capture'),
                   icon: const Icon(Icons.camera_alt_outlined),
                   style: IconButton.styleFrom(
                     backgroundColor: AppColors.surface,
@@ -184,7 +181,7 @@ class _StudioScreenState extends State<StudioScreen> {
                     label: 'Save outfit',
                     icon: Icons.bookmark_border_rounded,
                     expand: true,
-                    onPressed: _showSaveUnavailable,
+                    onPressed: () => _save(context),
                   ),
                 ),
               ],

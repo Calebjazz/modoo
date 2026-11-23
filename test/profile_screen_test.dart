@@ -4,6 +4,7 @@ import 'package:modoo/features/auth/models/app_user.dart';
 import 'package:modoo/main.dart';
 
 import 'fake_auth_repository.dart';
+import 'fake_outfit_repository.dart';
 
 void main() {
   testWidgets('Profile shows account stats and saves identity edits', (
@@ -19,12 +20,17 @@ void main() {
       createdAt: DateTime(2026),
     );
     final repository = FakeAuthRepository(signedIn: user);
-    await tester.pumpWidget(ModooApp(authRepository: repository));
+    await tester.pumpWidget(
+      ModooApp(
+        authRepository: repository,
+        outfitRepository: FakeOutfitRepository(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('PROFILE'));
     await tester.pumpAndSettle();
-    expect(find.text('18'), findsOneWidget);
+    expect(find.text('0'), findsOneWidget);
     expect(find.text('142'), findsOneWidget);
 
     await tester.tap(find.text('EDIT IDENTITY'));

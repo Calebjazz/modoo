@@ -8,7 +8,7 @@ class AppDatabase {
   AppDatabase._(this.db);
 
   static const _fileName = 'modoo.db';
-  static const _version = 1;
+  static const _version = 2;
 
   final Database db;
 
@@ -39,6 +39,31 @@ class AppDatabase {
         CREATE TABLE app_settings (
           key TEXT PRIMARY KEY,
           value TEXT NOT NULL
+        )
+      ''');
+    }
+    if (from < 2) {
+      await db.execute('''
+        CREATE TABLE saved_outfits (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          name TEXT NOT NULL,
+          avatar_id TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL
+        )
+      ''');
+      await db.execute(
+        'CREATE INDEX idx_saved_outfits_user ON saved_outfits(user_id)',
+      );
+      await db.execute('''
+        CREATE TABLE outfit_items (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          outfit_id INTEGER NOT NULL
+            REFERENCES saved_outfits(id) ON DELETE CASCADE,
+          clothing_item_id TEXT NOT NULL,
+          clothing_slot TEXT NOT NULL,
+          UNIQUE (outfit_id, clothing_slot)
         )
       ''');
     }

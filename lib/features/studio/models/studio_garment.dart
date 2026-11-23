@@ -39,6 +39,17 @@ class StudioGarment {
 }
 
 abstract final class StudioPreviewCatalog {
+  static StudioGarment? byId(String? id) {
+    if (id == null) return null;
+    for (final item in items) {
+      if (item.id == id) return item;
+    }
+    return null;
+  }
+
+  static int countIn(StudioGarmentCategory category) =>
+      items.where((item) => item.category == category).length;
+
   static const items = <StudioGarment>[
     StudioGarment(
       id: 'ribbed-mockneck',

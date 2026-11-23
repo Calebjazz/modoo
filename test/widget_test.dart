@@ -4,6 +4,7 @@ import 'package:modoo/features/auth/models/app_user.dart';
 import 'package:modoo/main.dart';
 
 import 'fake_auth_repository.dart';
+import 'fake_outfit_repository.dart';
 
 final _elena = AppUser(
   id: 1,
@@ -23,7 +24,12 @@ void main() {
     tester,
   ) async {
     _phoneSize(tester);
-    await tester.pumpWidget(ModooApp(authRepository: FakeAuthRepository()));
+    await tester.pumpWidget(
+      ModooApp(
+        authRepository: FakeAuthRepository(),
+        outfitRepository: FakeOutfitRepository(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('WELCOME BACK'), findsOneWidget);
@@ -49,7 +55,9 @@ void main() {
     _phoneSize(tester);
     final repo = FakeAuthRepository(signedIn: _elena);
     await repo.signOut();
-    await tester.pumpWidget(ModooApp(authRepository: repo));
+    await tester.pumpWidget(
+      ModooApp(authRepository: repo, outfitRepository: FakeOutfitRepository()),
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(
@@ -72,7 +80,10 @@ void main() {
   ) async {
     _phoneSize(tester);
     await tester.pumpWidget(
-      ModooApp(authRepository: FakeAuthRepository(signedIn: _elena)),
+      ModooApp(
+        authRepository: FakeAuthRepository(signedIn: _elena),
+        outfitRepository: FakeOutfitRepository(),
+      ),
     );
     await tester.pumpAndSettle();
     expect(find.text('WELCOME BACK,\nELENA'), findsOneWidget);
@@ -96,7 +107,10 @@ void main() {
   testWidgets('Favourite toggle flips the icon', (tester) async {
     _phoneSize(tester);
     await tester.pumpWidget(
-      ModooApp(authRepository: FakeAuthRepository(signedIn: _elena)),
+      ModooApp(
+        authRepository: FakeAuthRepository(signedIn: _elena),
+        outfitRepository: FakeOutfitRepository(),
+      ),
     );
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(
@@ -112,7 +126,10 @@ void main() {
   testWidgets('Looks tab shows the curated lookbook', (tester) async {
     _phoneSize(tester);
     await tester.pumpWidget(
-      ModooApp(authRepository: FakeAuthRepository(signedIn: _elena)),
+      ModooApp(
+        authRepository: FakeAuthRepository(signedIn: _elena),
+        outfitRepository: FakeOutfitRepository(),
+      ),
     );
     await tester.pumpAndSettle();
 

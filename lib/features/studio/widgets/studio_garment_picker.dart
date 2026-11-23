@@ -11,12 +11,14 @@ class StudioGarmentPicker extends StatelessWidget {
     required this.mountedGarments,
     required this.onCategoryChanged,
     required this.onGarmentSelected,
+    required this.onGarmentRemoved,
   });
 
   final StudioGarmentCategory category;
   final Map<StudioGarmentSlot, StudioGarment> mountedGarments;
   final ValueChanged<StudioGarmentCategory> onCategoryChanged;
   final ValueChanged<StudioGarment> onGarmentSelected;
+  final ValueChanged<StudioGarmentSlot> onGarmentRemoved;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,8 @@ class StudioGarmentPicker extends StatelessWidget {
                 if (value != StudioGarmentCategory.values.first)
                   const SizedBox(width: 7),
                 _CategoryButton(
-                  label: value.label,
+                  label:
+                      '${value.label} [${StudioPreviewCatalog.countIn(value)}]',
                   selected: category == value,
                   onTap: () => onCategoryChanged(value),
                 ),
@@ -77,6 +80,7 @@ class StudioGarmentPicker extends StatelessWidget {
                 garment: item,
                 isMounted: mountedGarments[item.slot]?.id == item.id,
                 onSelected: () => onGarmentSelected(item),
+                onRemoved: () => onGarmentRemoved(item.slot),
               );
             },
           ),
@@ -125,11 +129,13 @@ class _GarmentCard extends StatelessWidget {
     required this.garment,
     required this.isMounted,
     required this.onSelected,
+    required this.onRemoved,
   });
 
   final StudioGarment garment;
   final bool isMounted;
   final VoidCallback onSelected;
+  final VoidCallback onRemoved;
 
   @override
   Widget build(BuildContext context) {
@@ -165,10 +171,29 @@ class _GarmentCard extends StatelessWidget {
                       top: 5,
                       left: 5,
                       child: _PreviewBadge(
-                        label: isMounted ? 'Preview fit' : 'Preview only',
+                        label: isMounted ? 'Worn' : 'Preview only',
                         selected: isMounted,
                       ),
                     ),
+                    if (isMounted)
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: IconButton(
+                          tooltip: 'Remove ${garment.name}',
+                          onPressed: onRemoved,
+                          icon: const Icon(
+                            Icons.delete_outline_rounded,
+                            size: 15,
+                          ),
+                          style: IconButton.styleFrom(
+                            backgroundColor: AppColors.white,
+                            fixedSize: const Size(26, 26),
+                            minimumSize: const Size(26, 26),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
