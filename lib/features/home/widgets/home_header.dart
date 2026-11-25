@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
-import '../../../shared/widgets/tag_chip.dart';
 import '../models/home_models.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -24,7 +23,6 @@ class HomeHeader extends StatelessWidget {
                 style: AppTextStyles.eyebrow,
               ),
             ),
-            const TagChip('Offline', variant: TagChipVariant.white),
           ],
         ),
         const SizedBox(height: 16),

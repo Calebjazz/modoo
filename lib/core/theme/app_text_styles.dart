@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
 
-/// Typography built only on the bundled Inter weights (200 and 500).
+/// Typography built only on the bundled Instrument Sans weights (400 and 500).
 abstract final class AppTextStyles {
-  static const String fontFamily = 'Inter';
+  static const String fontFamily = 'Instrument Sans';
 
-  static const _light = FontWeight.w200;
+  static const _regular = FontWeight.w400;
   static const _medium = FontWeight.w500;
 
   /// Large uppercase headline, e.g. "WELCOME BACK, ELENA".
@@ -60,7 +60,7 @@ abstract final class AppTextStyles {
 
   static const lead = TextStyle(
     fontFamily: fontFamily,
-    fontWeight: _light,
+    fontWeight: _regular,
     fontSize: 16,
     height: 1.4,
     color: AppColors.black,
@@ -95,7 +95,7 @@ abstract final class AppTextStyles {
 
   static const body = TextStyle(
     fontFamily: fontFamily,
-    fontWeight: _light,
+    fontWeight: _regular,
     fontSize: 13,
     height: 1.4,
     color: AppColors.black,
@@ -103,7 +103,7 @@ abstract final class AppTextStyles {
 
   static const caption = TextStyle(
     fontFamily: fontFamily,
-    fontWeight: _light,
+    fontWeight: _regular,
     fontSize: 12,
     height: 1.3,
     color: AppColors.black,

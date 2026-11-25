@@ -87,6 +87,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('WELCOME BACK,\nELENA'), findsOneWidget);
+    expect(find.text('Offline'), findsNothing);
 
     await tester.tap(find.text('WARDROBE').last);
     await tester.pumpAndSettle();
